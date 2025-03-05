@@ -1,0 +1,11 @@
+services:
+  frontend:
+    image: node:21
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: ["sh", "-c", "npm install && npm run build && npx serve -s dist"]
+    environment:
+      - API_BASE_URL=${{ shared.API_BASE_URL }}
