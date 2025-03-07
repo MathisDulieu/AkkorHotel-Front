@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 import { AuthContext } from './services/AuthContext';
 import { UserContext } from './services/UserContext';
 
 import PublicRoute from "./services/PublicRoute";
 
-// import { getUserData } from './hooks/UserHooks';
-import Header from "./components/structure/header";
+import { getUserData } from './hooks/UserHooks';
 import Footer from "./components/structure/footer";
 import NotFound from "./pages/common/NotFound.jsx";
 import Account from "./pages/user/Account";
@@ -16,8 +15,6 @@ import SendValidationEmail from "./pages/authentication/SendValidationEmail.jsx"
 import Register from './pages/authentication/Register';
 import Login from './pages/authentication/Login';
 import Home from './pages/common/Home';
-
-import Cookies from "js-cookie";
 import PrivateRoute from "./services/PrivateRoute";
 import UserRole from "./services/UserRole";
 import AdminDashboard from "./pages/admin/Dashboard.jsx";
@@ -26,35 +23,62 @@ export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [userData, setUserData] = useState({
+        username: "undefined",
+        profileImageUrl: "undefined",
+        userRole: "USER",
+        error: null
+    });
 
-    // useEffect(() => {
-    //     const token = Cookies.get('authToken') || localStorage.getItem('authToken');
-    //     const hasToken = !!token;
-    //
-    //     if (hasToken) {
-    //         getUserData()
-    //             .then((data) => {
-    //                 setUser(data);
-    //
-    //                 const role = data.role;
-    //                 setIsAdmin(role === "ADMIN");
-    //             })
-    //             .then(() => {
-    //                 setIsAuthenticated(hasToken);
-    //                 setIsLoading(false);
-    //             })
-    //             .catch((error) => {
-    //                 console.error('Error fetching user data:', error);
-    //                 setIsLoading(false);
-    //             });
-    //     } else {
-    //         setIsAuthenticated(false);
-    //         setIsLoading(false);
-    //     }
-    // }, []);
+    const getUserDetails = async () => {
+        try {
+            const response = await getUserData();
+
+            if (response.informations) {
+                const userInfo = {
+                    username: response.informations.username || "undefined",
+                    profileImageUrl: response.informations.profileImageUrl || "undefined",
+                    userRole: response.informations.userRole || "USER",
+                    error: response.informations.error
+                };
+
+                setUserData(userInfo);
+                localStorage.setItem("username", userInfo.username);
+                localStorage.setItem("profileImage", userInfo.profileImageUrl);
+                localStorage.setItem("userRole", userInfo.userRole);
+                setIsAuthenticated(true)
+            } else if (response.error) {
+                const errorInfo = {
+                    username: "undefined",
+                    profileImageUrl: "undefined",
+                    userRole: "USER",
+                    error: response.error.error
+                };
+                setUserData(errorInfo);
+            }
+        } catch (error) {
+            console.error("Failed to fetch Users:", error);
+            const errorInfo = {
+                username: "undefined",
+                profileImageUrl: "undefined",
+                userRole: "USER",
+                error: error.message
+            };
+            setUserData(errorInfo);
+        }
+    };
+
+    useEffect(() => {
+        getUserDetails().then(() => {
+            setIsLoading(false);
+        });
+    }, []);
 
     return (
         <AuthContext.Provider value={{
+            isLoading,
+            setIsLoading,
             isAuthenticated,
             setIsAuthenticated,
             isAdmin,
@@ -66,7 +90,11 @@ export default function App() {
                 <BrowserRouter>
                     <div className="App">
                         <Routes>
-                            <Route path="/*" element={<Main isAuthenticated={isAuthenticated} isAdmin={isAdmin} />} />
+                            {isLoading ? (
+                                <Route path="/*" element={<div>Chargement...</div>} />
+                            ) : (
+                                <Route path="/*" element={<Main isAuthenticated={isAuthenticated} isAdmin={isAdmin} />} />
+                            )}
                         </Routes>
                     </div>
                 </BrowserRouter>
@@ -77,7 +105,7 @@ export default function App() {
 
 function Main({ isAuthenticated }) {
     const location = useLocation();
-    const isAuthPage = location.pathname === "/login" || location.pathname === "/inscription" || location.pathname === "/mot-de-passe-oublie";
+    const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
     const isAdminPage = location.pathname.startsWith("/admin");
 
     return (
@@ -91,7 +119,7 @@ function Main({ isAuthenticated }) {
                     <Route exact path="/validate-email/:token" element={<PublicRoute element={<div className="Main"><ValidEmail /></div>} />} />
                     <Route exact path="/send-validation-email" element={<PublicRoute element={<div className="Main"><SendValidationEmail /></div>} />} />
 
-                    <Route exact path="/admin/dashboard" element={<UserRole allowedRoles={['ADMIN']} element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><AdminDashboard /></div>}/>}/>}/>
+                    <Route exact path="/admin/dashboard" element={<UserRole allowedRoles={['ADMIN']} element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><AdminDashboard /></div>} />} />} />
 
                     <Route exact path="/my-account" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Account /></div>} />} />
                     <Route exact path="/my-bookings" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Account /></div>} />} />

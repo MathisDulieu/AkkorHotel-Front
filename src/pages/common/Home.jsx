@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Globe, User, Bed, RefreshCcw } from "lucide-react";
 import Header from "../../components/structure/header.jsx";
 import Filters from "../../components/home/Filters.jsx";
 import DatePicker from "../../components/home/DatePicker";
 import Checkbox from "../../components/home/Checkbox";
 import HotelCard from "../../components/home/HotelCard.jsx";
+import { fetchHotels } from "../../hooks/HotelHooks.js";
 
 const Home = () => {
+    const [hotels, setHotels] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [hotelsMetadata, setHotelsMetadata] = useState({
+        hotelsFound: 0,
+        totalPages: 0,
+        error: null
+    });
+
     const [searchCity, setSearchCity] = useState('');
 
     const [guestCount, setGuestCount] = useState(1);
@@ -127,9 +136,83 @@ const Home = () => {
         }
     };
 
-    const refreshPage = () => {
-        window.location.reload();
+    const goToNextPage = () => {
+        if (currentPage < hotelsMetadata.totalPages - 1) {
+            setCurrentPage(currentPage + 1);
+        }
     };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const buildRequestData = () => {
+        const selectedAmenities = Object.entries(hotelAmenities)
+            .filter(([_, isSelected]) => isSelected)
+            .map(([key, _]) => key.toUpperCase());
+
+        return {
+            page: currentPage,
+            pageSize: 10,
+            filter: "PRICE_LOW_TO_HIGH",
+            filters: {
+                oneStar: starCategories.oneStar,
+                twoStars: starCategories.twoStars,
+                threeStars: starCategories.threeStars,
+                fourStars: starCategories.fourStars,
+                fiveStars: starCategories.fiveStars,
+                hotelAmenities: selectedAmenities,
+                minPrice: priceRange.minPrice,
+                maxPrice: priceRange.maxPrice,
+                guests: guestCount,
+                bedrooms: bedroomCount,
+                city: searchCity
+            }
+        };
+    };
+
+    const getHotels = async () => {
+        try {
+            const response = await fetchHotels(buildRequestData());
+
+            if (response.informations) {
+                setHotels(response.informations.hotels || []);
+                setHotelsMetadata({
+                    hotelsFound: response.informations.hotelsFound || 0,
+                    totalPages: response.informations.totalPages || 0,
+                    error: response.informations.error
+                });
+            } else if (response.warning) {
+                setHotels([]);
+                setHotelsMetadata({
+                    hotelsFound: 0,
+                    totalPages: response.warning.totalPages || 0,
+                    error: response.warning.error
+                });
+            } else if (response.error) {
+                setHotels([]);
+                setHotelsMetadata({
+                    hotelsFound: 0,
+                    totalPages: 0,
+                    error: response.error.error
+                });
+            }
+        } catch (error) {
+            console.error("Failed to fetch hotels:", error);
+            setHotels([]);
+            setHotelsMetadata({
+                hotelsFound: 0,
+                totalPages: 0,
+                error: error.message
+            });
+        }
+    };
+
+    useEffect(() => {
+        getHotels();
+    }, [currentPage]);
 
     return (
         <div className="h-screen w-full bg-white relative flex overflow-hidden">
@@ -334,10 +417,11 @@ const Home = () => {
                         <div className="mb-4">
                             <div className="flex justify-between items-center mb-4">
                                 <div className="text-lg font-semibold text-gray-800">
-                                    New York: 125 hotels found
+                                    {searchCity ? `${searchCity}: ` : ""}
+                                    {hotelsMetadata.hotelsFound} hôtel{hotelsMetadata.hotelsFound !== 1 ? 's' : ''} trouvé{hotelsMetadata.hotelsFound !== 1 ? 's' : ''}
                                 </div>
                                 <button
-                                    onClick={refreshPage}
+                                    onClick={getHotels}
                                     className="flex items-center px-3 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-lg shadow-md"
                                 >
                                     <RefreshCcw className="h-5 w-5 mr-2" />
@@ -359,24 +443,34 @@ const Home = () => {
                         </div>
 
                         <div className="space-y-4">
-                            {[...Array(10)].map((_, index) => (
-                                <HotelCard
-                                    key={index}
-                                    title={`Luxury Hotel in New York ${index + 1}`}
-                                    description="Experience ultimate comfort and luxury in the heart of the city."
-                                    price={`${199 + (index * 10)}`}
-                                    rating={`${4.5 - (index * 0.1)}`}
-                                    googleMapUrl="https://goo.gl/maps/votreLienGoogleMaps"
-                                    hotelAddress={"1234 Ocean View, Maldives"}
-                                    hotelId={"1"}
-                                />
-                            ))}
+                            {hotels.length > 0 ? (
+                                hotels.map((hotel) => (
+                                    <HotelCard
+                                        key={hotel.hotelId}
+                                        title={hotel.name}
+                                        description={hotel.description}
+                                        price={hotel.price}
+                                        rating={hotel.stars || 0}
+                                        googleMapUrl={hotel.googleMapUrl}
+                                        hotelAddress={hotel.address}
+                                        hotelId={hotel.hotelId}
+                                        imageUrl={hotel.firstPicture}
+                                    />
+                                ))
+                            ) : (
+                                <div className="text-center py-8">
+                                    <p className="text-lg text-gray-600">
+                                        {hotelsMetadata.error || "Aucun hôtel trouvé. Essayez de modifier vos filtres."}
+                                    </p>
+                                </div>
+                            )}
                         </div>
 
                         <div className="flex justify-center mt-4">
                             <div className="flex items-center gap-8">
                                 <button
-                                    disabled
+                                    disabled={currentPage === 0}
+                                    onClick={goToPreviousPage}
                                     className="rounded-md border border-slate-300 p-2.5 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                     type="button"
                                 >
@@ -385,9 +479,12 @@ const Home = () => {
                                     </svg>
                                 </button>
                                 <p className="text-slate-600">
-                                    Page <strong className="text-slate-800">1</strong> of&nbsp;<strong className="text-slate-800">10</strong>
+                                    Page <strong className="text-slate-800">{currentPage + 1}</strong> of&nbsp;
+                                    <strong className="text-slate-800">{hotelsMetadata.totalPages || 1}</strong>
                                 </p>
                                 <button
+                                    disabled={currentPage >= hotelsMetadata.totalPages - 1}
+                                    onClick={goToNextPage}
                                     className="rounded-md border border-slate-300 p-2.5 text-center text-sm transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                                     type="button"
                                 >
