@@ -1,5 +1,3 @@
-import Cookies from "js-cookie";
-
 const API_BASE_URL = "http://localhost:8080";
 
 export async function getUserData() {
@@ -25,15 +23,14 @@ export async function getUserData() {
 }
 
 export async function updateUser(username, email, oldPassword, newPassword) {
-    const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-    const authToken = cookiesAccepted ? Cookies.get('authToken') : localStorage.getItem('authToken');
+    const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
         return {};
     }
 
-    const response = await fetch(`${API_BASE_URL}/user/update`, {
-        method: 'PUT',
+    const response = await fetch(`${API_BASE_URL}/private/user`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`
@@ -50,8 +47,7 @@ export async function updateUser(username, email, oldPassword, newPassword) {
 }
 
 export async function updateProfileImage(imageFile) {
-    const cookiesAccepted = localStorage.getItem('cookiesAccepted') === 'true';
-    const authToken = cookiesAccepted ? Cookies.get('authToken') : localStorage.getItem('authToken');
+    const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
         return {};
@@ -60,10 +56,10 @@ export async function updateProfileImage(imageFile) {
     const formData = new FormData();
     formData.append('file', imageFile);
 
-    const response = await fetch(`${API_BASE_URL}/user/profile-image`, {
+    const response = await fetch(`${API_BASE_URL}/private/user/profile-image`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${authToken}`,
+            'Authorization': `Bearer ${authToken}`
         },
         body: formData,
     });
@@ -74,4 +70,27 @@ export async function updateProfileImage(imageFile) {
 
     const text = await response.text();
     return text ? JSON.parse(text) : {};
+}
+
+export async function deleteUser() {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        return {};
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/user`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data ? data : {};
 }

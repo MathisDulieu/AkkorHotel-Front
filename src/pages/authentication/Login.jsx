@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { User, Lock, AlertCircle } from "lucide-react";
+import React, {useState, useEffect, useContext} from "react";
+import { User, Lock, AlertCircle, ArrowRight } from "lucide-react";
 import { AuthContext } from '../../services/AuthContext';
 import { Link, useNavigate } from "react-router-dom";
-import Footer from "../../components/structure/footer";
 import { login } from "../../hooks/AuthenticationHooks";
 import { getUserData } from '../../hooks/UserHooks';
+
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -14,6 +14,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const navigate = useNavigate();
+    const { setIsAuthenticated, setIsAdmin } = useContext(AuthContext);
 
     useEffect(() => {
         if (isAuthenticated()) {
@@ -72,9 +73,13 @@ const Login = () => {
                     error: response.informations.error
                 };
 
+                setIsAdmin(userInfo.userRole === "ADMIN");
+
                 localStorage.setItem("username", userInfo.username);
                 localStorage.setItem("profileImage", userInfo.profileImageUrl);
                 localStorage.setItem("userRole", userInfo.userRole);
+
+                setIsAuthenticated(true)
             }
 
             setTimeout(() => {
@@ -87,10 +92,14 @@ const Login = () => {
         }
     };
 
+    const handleContinueWithoutLogin = () => {
+        navigate('/');
+    };
+
     return (
         <div className="h-screen w-full bg-white flex items-center justify-center relative">
             <div
-                className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-xl"
+                className="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-xl relative"
                 style={{ border: "1px solid #e0e0e0" }}
             >
                 <div className="text-center">
@@ -197,6 +206,14 @@ const Login = () => {
                                 Remember me
                             </label>
                         </div>
+                        <div>
+                            <Link
+                                to="/send-validation-email"
+                                className="text-sm font-medium text-blue-600 hover:text-blue-500"
+                            >
+                                Resend validation email
+                            </Link>
+                        </div>
                     </div>
 
                     <div>
@@ -210,8 +227,8 @@ const Login = () => {
                     </div>
                 </form>
 
-                <div className="text-center">
-                    <p className="mt-2 text-sm text-gray-600">
+                <div className="text-center space-y-8">
+                    <p className="text-sm text-gray-600">
                         Don't have an account?{" "}
                         <Link
                             to="/register"
@@ -220,6 +237,15 @@ const Login = () => {
                             Sign up
                         </Link>
                     </p>
+
+                    <div className="absolute bottom-4 right-4">
+                        <button
+                            onClick={handleContinueWithoutLogin}
+                            className="text-sm font-medium text-gray-600 hover:text-gray-800 flex items-center gap-1"
+                        >
+                            Continue without logging in <ArrowRight size={16} />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
 
-import { AuthContext } from './services/AuthContext';
-import { UserContext } from './services/UserContext';
+import {AuthContext} from './services/AuthContext';
+import {UserContext} from './services/UserContext';
 
 import PublicRoute from "./services/PublicRoute";
 
-import { getUserData } from './hooks/UserHooks';
-import Footer from "./components/structure/footer";
+import {getUserData} from './hooks/UserHooks';
 import NotFound from "./pages/common/NotFound.jsx";
 import Account from "./pages/user/Account";
 import ValidEmail from "./pages/authentication/ValidEmail.jsx";
@@ -17,19 +16,17 @@ import Login from './pages/authentication/Login';
 import Home from './pages/common/Home';
 import PrivateRoute from "./services/PrivateRoute";
 import UserRole from "./services/UserRole";
-import AdminDashboard from "./pages/admin/Dashboard.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
+import Header from "./components/structure/header.jsx";
+import Footer from "./components/structure/footer.jsx";
+import Bookings from "./pages/user/Bookings.jsx";
+import Reservation from "./pages/common/Reservation.jsx";
 
 export default function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [userData, setUserData] = useState({
-        username: "undefined",
-        profileImageUrl: "undefined",
-        userRole: "USER",
-        error: null
-    });
 
     const getUserDetails = async () => {
         try {
@@ -43,29 +40,15 @@ export default function App() {
                     error: response.informations.error
                 };
 
-                setUserData(userInfo);
+                setIsAdmin(userInfo.userRole === "ADMIN");
+
                 localStorage.setItem("username", userInfo.username);
                 localStorage.setItem("profileImage", userInfo.profileImageUrl);
                 localStorage.setItem("userRole", userInfo.userRole);
                 setIsAuthenticated(true)
-            } else if (response.error) {
-                const errorInfo = {
-                    username: "undefined",
-                    profileImageUrl: "undefined",
-                    userRole: "USER",
-                    error: response.error.error
-                };
-                setUserData(errorInfo);
             }
         } catch (error) {
-            console.error("Failed to fetch Users:", error);
-            const errorInfo = {
-                username: "undefined",
-                profileImageUrl: "undefined",
-                userRole: "USER",
-                error: error.message
-            };
-            setUserData(errorInfo);
+            console.error("Failed to fetch User:", error);
         }
     };
 
@@ -107,9 +90,16 @@ function Main({ isAuthenticated }) {
     const location = useLocation();
     const isAuthPage = location.pathname === "/login" || location.pathname === "/register";
     const isAdminPage = location.pathname.startsWith("/admin");
+    const isHomePage = location.pathname.endsWith("/");
 
     return (
         <>
+            {!isAuthPage && !isHomePage &&(
+                <header className="App-header">
+                    <Header />
+                </header>
+            )}
+
             <main className="App-main">
                 <Routes>
                     <Route exact path="/" element={<div className="Main"><Home /></div>} />
@@ -122,14 +112,14 @@ function Main({ isAuthenticated }) {
                     <Route exact path="/admin/dashboard" element={<UserRole allowedRoles={['ADMIN']} element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><AdminDashboard /></div>} />} />} />
 
                     <Route exact path="/my-account" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Account /></div>} />} />
-                    <Route exact path="/my-bookings" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Account /></div>} />} />
-                    <Route exact path="/book-hotel" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Account /></div>} />} />
+                    <Route exact path="/my-bookings" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Bookings /></div>} />} />
+                    <Route exact path="/book-hotel" element={<PrivateRoute isAuthenticated={isAuthenticated} element={<div className="Main"><Reservation /></div>} />} />
 
                     <Route exact path="*" element={<div className="Main"><NotFound /></div>} />
                 </Routes>
             </main>
 
-            {!isAuthPage && !isAdminPage && (
+            {!isAuthPage && !isHomePage && (
                 <footer className="App-footer">
                     <Footer />
                 </footer>

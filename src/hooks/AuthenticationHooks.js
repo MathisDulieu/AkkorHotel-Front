@@ -66,3 +66,27 @@ export async function register(username, email, password) {
 
     return response.json();
 }
+
+export async function resendConfirmationEmail(email) {
+    const response = await fetch(`${API_BASE_URL}/auth/resend-confirmation-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) await handleResponse(response);
+
+    return response.json();
+}
+
+export async function confirmEmail(token) {
+    const response = await fetch(`${API_BASE_URL}/auth/confirm-email`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token }),
+    });
+
+    if (!response.ok) await handleResponse(response);
+
+    return response.json();
+}

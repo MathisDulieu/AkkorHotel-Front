@@ -15,7 +15,17 @@ const Header = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
 
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
+
+    const handleNavigation = (path) => {
+        closeDropdown();
+        navigate(path);
+    };
+
     const handleLogout = () => {
+        closeDropdown();
         setIsAuthenticated(false);
         localStorage.removeItem('authToken');
         localStorage.removeItem('username');
@@ -26,7 +36,12 @@ const Header = () => {
 
     return (
         <header className="h-20 w-full flex items-center justify-between px-5 space-x-10" style={{ backgroundColor: '#003580' }}>
-            <div className="text-white text-2xl font-bold">Akkor Hotel</div>
+            <div
+                className="text-white text-2xl font-bold cursor-pointer"
+                onClick={() => navigate('/')}
+            >
+                Akkor Hotel
+            </div>
             <div className="flex flex-shrink-0 items-center space-x-4 text-white">
                 {authToken ? (
                     <>
@@ -46,16 +61,24 @@ const Header = () => {
                                         <li>
                                             <button
                                                 className="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100"
-                                                onClick={() => navigate('/my-account')}
+                                                onClick={() => handleNavigation('/my-account')}
                                             >
                                                 My Account
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button
+                                                className="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100"
+                                                onClick={() => handleNavigation('/my-bookings')}
+                                            >
+                                                My Bookings
                                             </button>
                                         </li>
                                         {userRole === 'ADMIN' && (
                                             <li>
                                                 <button
                                                     className="block w-full px-4 py-2 text-center text-gray-700 hover:bg-gray-100"
-                                                    onClick={() => navigate('/admin/dashboard')}
+                                                    onClick={() => handleNavigation('/admin/dashboard')}
                                                 >
                                                     Dashboard
                                                 </button>

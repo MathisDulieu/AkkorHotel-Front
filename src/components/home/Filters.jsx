@@ -38,12 +38,10 @@ const Filters = ({
             newFilters.push({ type: 'city', label: `City: ${searchCity}`, value: searchCity });
         }
 
-        // Guests filter
         if (guestCount > 1) {
             newFilters.push({ type: 'guests', label: `Guests: ${guestCount}`, value: guestCount });
         }
 
-        // Bedrooms filter
         if (bedroomCount > 1) {
             newFilters.push({ type: 'bedrooms', label: `Bedrooms: ${bedroomCount}`, value: bedroomCount });
         }
@@ -70,7 +68,6 @@ const Filters = ({
             }
         });
 
-        // Price filter
         if (priceRange.minPrice > 0 || priceRange.maxPrice < 2000) {
             newFilters.push({
                 type: 'price',
@@ -83,10 +80,8 @@ const Filters = ({
     }, [searchCity, guestCount, bedroomCount, starCategories, hotelAmenities, priceRange]);
 
     const handleRemoveFilter = (filterToRemove) => {
-        // Call the parent component's filter removal handler
         onFilterRemoval(filterToRemove);
 
-        // Optionally, remove the filter from the active filters list
         setActiveFilters(activeFilters.filter(filter => filter !== filterToRemove));
     };
 
@@ -115,7 +110,6 @@ const Filters = ({
                 </div>
             </div>
 
-            {/* Rest of the Filters component remains the same */}
             <div className="relative inline-block text-left">
                 <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
