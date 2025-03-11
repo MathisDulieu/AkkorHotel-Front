@@ -7,6 +7,11 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  server: {
+    allowedHosts: [
+      'akkorhotel-front-production.up.railway.app'
+    ]
+  },
   test: {
     environment: 'jsdom',
     globals: true,
