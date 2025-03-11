@@ -41,6 +41,7 @@ const SendValidationEmail = () => {
 
         setError('');
         setIsLoading(true);
+        setCanSend(false);
 
         try {
             await resendConfirmationEmail(email);
@@ -54,6 +55,7 @@ const SendValidationEmail = () => {
             }, 5000);
         } catch (error) {
             setError(error.message);
+            setCanSend(true); // Allow retry if there was an error
         } finally {
             setIsLoading(false);
         }

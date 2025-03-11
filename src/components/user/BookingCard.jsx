@@ -3,14 +3,14 @@ import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const BookingCard = ({
-                         imageUrl,
-                         hotelName,
-                         hotelAddress,
-                         checkInDate,
-                         checkOutDate,
-                         totalPrice,
-                         bookingId,
-                     }) => {
+    imageUrl,
+    hotelName,
+    hotelAddress,
+    checkInDate,
+    checkOutDate,
+    totalPrice,
+    bookingId,
+}) => {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
@@ -31,16 +31,20 @@ const BookingCard = ({
             </div>
             <div className="p-8 w-1/2 flex flex-col justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-gray-900">{hotelName}</h2>
+                    <h2 className="text-2xl font-bold text-blue-gray-900">
+                        {hotelName}
+                    </h2>
                     <p className="text-gray-500 italic flex items-center mt-2">
                         <MapPin className="h-5 w-5 mr-2" />
                         {hotelAddress}
                     </p>
                     <p className="text-gray-700 mt-4">
-                        <span className="font-semibold">Check-in:</span> {new Date(checkInDate).toLocaleDateString()}
+                        <span className="font-semibold">Check-in:</span>{" "}
+                        {new Date(checkInDate).toLocaleDateString()}
                     </p>
                     <p className="text-gray-700">
-                        <span className="font-semibold">Check-out:</span> {new Date(checkOutDate).toLocaleDateString()}
+                        <span className="font-semibold">Check-out:</span>{" "}
+                        {new Date(checkOutDate).toLocaleDateString()}
                     </p>
                 </div>
                 <div className="text-xl font-bold text-gray-900">

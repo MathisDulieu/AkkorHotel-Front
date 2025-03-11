@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { Globe, User, Bed, RefreshCcw } from "lucide-react";
 import Header from "../../components/structure/header.jsx";
-import Footer from "../../components/structure/footer.jsx";
 import Filters from "../../components/home/Filters.jsx";
 import DatePicker from "../../components/home/DatePicker";
 import Checkbox from "../../components/home/Checkbox";
@@ -495,8 +494,6 @@ const Home = () => {
                                 </button>
                             </div>
                         </div>
-                        <hr className="my-4 border-t border-gray-500" />
-                        <Footer />
                     </div>
                 </main>
             </div>

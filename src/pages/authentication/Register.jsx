@@ -278,7 +278,6 @@ const Register = () => {
                     </Link>
                 </p>
             </div>
-            <Footer />
         </div>
     );
 };
