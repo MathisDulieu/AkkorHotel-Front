@@ -4,6 +4,6 @@ services:
     image: node:21
     container_name: frontend
     ports:
-      - "5000:5000"
+      - "5173:5173"
     environment:
       - API_BASE_URL=${{ shared.API_BASE_URL }}
