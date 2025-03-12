@@ -383,8 +383,9 @@ const Home = () => {
                         <div className="mb-4">
                             <div className="text-sm font-medium text-white/80 mb-1">Price (per night)</div>
                             <div className="mb-2">
-                                <label className="text-white/80 text-sm">Minimum price:</label>
+                                <label htmlFor="minPriceInput" className="text-white/80 text-sm">Minimum price:</label>
                                 <input
+                                    id="minPriceInput"
                                     type="number"
                                     min={priceRange.min}
                                     max={priceRange.maxPrice - 50}
@@ -394,8 +395,9 @@ const Home = () => {
                                 />
                             </div>
                             <div>
-                                <label className="text-white/80 text-sm">Maximum price:</label>
+                                <label htmlFor="maxPriceInput" className="text-white/80 text-sm">Maximum price:</label>
                                 <input
+                                    id="maxPriceInput"
                                     type="number"
                                     min={priceRange.minPrice + 50}
                                     max={priceRange.max}

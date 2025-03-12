@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {getAllUsers} from '../../hooks/AdminHooks.js';
+import React, { useState, useEffect } from "react";
+import { getAllUsers } from "../../hooks/AdminHooks.js";
 
 const GetUsers = () => {
     const [users, setUsers] = useState([]);
@@ -78,45 +78,67 @@ const GetUsers = () => {
                                 <div className="overflow-hidden border border-gray-200 md:rounded-lg">
                                     <table className="min-w-full divide-y divide-gray-200">
                                         <thead className="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" className="py-3.5 px-3 text-sm font-normal text-left text-blue-700 w-1/4">
-                                                User ID
-                                            </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-blue-700">
-                                                Username
-                                            </th>
-                                            <th scope="col" className="px-4 py-3.5 text-sm font-normal text-left text-blue-700">
-                                                Email
-                                            </th>
-                                        </tr>
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    className="py-3.5 px-3 text-sm font-normal text-left text-blue-700 w-1/4"
+                                                >
+                                                    User ID
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-4 py-3.5 text-sm font-normal text-left text-blue-700"
+                                                >
+                                                    Username
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-4 py-3.5 text-sm font-normal text-left text-blue-700"
+                                                >
+                                                    Email
+                                                </th>
+                                            </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                        {users.length > 0 ? (
-                                            users.map((user) => (
-                                                <tr key={user.id}>
-                                                    <td className="px-3 py-4 text-sm font-medium text-blue-800 whitespace-nowrap w-1/3">
-                                                        {user.id}
-                                                    </td>
-                                                    <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
-                                                        <div className="flex items-center gap-x-2">
-                                                            <img className="object-cover w-8 h-8 rounded-full" src={user.profileImageUrl} alt="" />
-                                                            <div>
-                                                                <h2 className="text-sm font-medium text-blue-800">{user.username}</h2>
+                                            {users.length > 0 ? (
+                                                users.map((user) => (
+                                                    <tr key={user.id}>
+                                                        <td className="px-3 py-4 text-sm font-medium text-blue-800 whitespace-nowrap w-1/3">
+                                                            {user.id}
+                                                        </td>
+                                                        <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                                            <div className="flex items-center gap-x-2">
+                                                                <img
+                                                                    className="object-cover w-8 h-8 rounded-full"
+                                                                    src={
+                                                                        user.profileImageUrl
+                                                                    }
+                                                                    alt=""
+                                                                />
+                                                                <div>
+                                                                    <h2 className="text-sm font-medium text-blue-800">
+                                                                        {
+                                                                            user.username
+                                                                        }
+                                                                    </h2>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
-                                                        {user.email}
+                                                        </td>
+                                                        <td className="px-4 py-4 text-sm text-gray-700 whitespace-nowrap">
+                                                            {user.email}
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                            ) : (
+                                                <tr>
+                                                    <td
+                                                        colSpan="3"
+                                                        className="px-4 py-4 text-sm text-center text-gray-500"
+                                                    >
+                                                        No users found
                                                     </td>
                                                 </tr>
-                                            ))
-                                        ) : (
-                                            <tr>
-                                                <td colSpan="3" className="px-4 py-4 text-sm text-center text-gray-500">
-                                                    No users found
-                                                </td>
-                                            </tr>
-                                        )}
+                                            )}
                                         </tbody>
                                     </table>
                                 </div>
@@ -128,10 +150,25 @@ const GetUsers = () => {
                         <button
                             onClick={handlePrevPage}
                             disabled={currentPage === 0}
-                            className={`flex items-center px-5 py-2 text-sm text-blue-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`flex items-center px-5 py-2 text-sm text-blue-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ${
+                                currentPage === 0
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                            }`}
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-5 h-5 rtl:-scale-x-100"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
+                                />
                             </svg>
                             <span>previous</span>
                         </button>
@@ -145,11 +182,26 @@ const GetUsers = () => {
                         <button
                             onClick={handleNextPage}
                             disabled={currentPage >= totalPages - 1}
-                            className={`flex items-center px-5 py-2 text-sm text-blue-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ${currentPage >= totalPages - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`flex items-center px-5 py-2 text-sm text-blue-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 ${
+                                currentPage >= totalPages - 1
+                                    ? "opacity-50 cursor-not-allowed"
+                                    : ""
+                            }`}
                         >
                             <span>Next</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5 rtl:-scale-x-100">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="w-5 h-5 rtl:-scale-x-100"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"
+                                />
                             </svg>
                         </button>
                     </div>

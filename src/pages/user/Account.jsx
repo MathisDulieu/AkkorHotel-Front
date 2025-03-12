@@ -217,7 +217,6 @@ function Account() {
                                     value={oldPassword}
                                     onChange={(e) => {
                                         setOldPassword(e.target.value);
-                                        // Définir isPasswordModified à true dès qu'on commence à taper
                                         if (e.target.value) {
                                             setIsPasswordModified(true);
                                         }
@@ -242,7 +241,6 @@ function Account() {
                                     value={newPassword}
                                     onChange={(e) => {
                                         setNewPassword(e.target.value);
-                                        // Définir isPasswordModified à true immédiatement
                                         setIsPasswordModified(true);
                                     }}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
@@ -265,7 +263,6 @@ function Account() {
                                     value={confirmPassword}
                                     onChange={(e) => {
                                         setConfirmPassword(e.target.value);
-                                        // Définir isPasswordModified à true immédiatement
                                         setIsPasswordModified(true);
                                     }}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"

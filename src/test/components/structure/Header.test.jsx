@@ -1,10 +1,9 @@
 import {fireEvent, render, screen} from "@testing-library/react";
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import Header from "../../../components/structure/header.jsx";
-import {BrowserRouter as Router} from "react-router-dom";
-import {AuthContext} from "../../../services/AuthContext"; // Ajustez le chemin selon votre structure
+import { BrowserRouter as Router } from "react-router-dom";
+import { AuthContext } from "../../../services/AuthContext";
 
-// Mock the hooks
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
     const actual = await vi.importActual("react-router-dom");
@@ -14,7 +13,6 @@ vi.mock("react-router-dom", async () => {
     };
 });
 
-// Mock localStorage
 const localStorageMock = (() => {
     let store = {};
     return {
@@ -36,6 +34,9 @@ Object.defineProperty(window, "localStorage", { value: localStorageMock });
 describe("Header Component", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        localStorageMock.getItem.mockClear();
+        localStorageMock.setItem.mockClear();
+        localStorageMock.removeItem.mockClear();
         localStorageMock.clear();
     });
 
@@ -88,21 +89,32 @@ describe("Header Component", () => {
     });
 
     it("should navigate to the specified path when a menu item is clicked", () => {
-        renderWithContext(<Header />);
+        localStorageMock.setItem("authToken", "fake-token");
+        localStorageMock.setItem("username", "testuser");
+        localStorageMock.setItem("profileImage", "/test-image.jpg");
+        localStorageMock.setItem("userRole", "USER");
 
+        renderWithContext(<Header />);
+        localStorageMock.setItem("authToken", "fake-token");
         const profileImage = screen.getByAltText("Profile");
         fireEvent.click(profileImage);
 
         fireEvent.click(screen.getByText("My Account"));
         expect(mockNavigate).toHaveBeenCalledWith("/my-account");
 
+        fireEvent.click(profileImage)
+
         fireEvent.click(screen.getByText("My Bookings"));
         expect(mockNavigate).toHaveBeenCalledWith("/my-bookings");
     });
 
     it("should log out the user when the logout button is clicked", () => {
+        localStorageMock.setItem("authToken", "fake-token");
+        localStorageMock.setItem("username", "testuser");
+        localStorageMock.setItem("profileImage", "/test-image.jpg");
+        localStorageMock.setItem("userRole", "USER");
+
         renderWithContext(<Header />);
-        // check is authenticated
         expect(localStorageMock.getItem("authToken")).toBe("fake-token");
 
         const profileImage = screen.getByAltText("Profile");

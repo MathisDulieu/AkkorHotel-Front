@@ -1,12 +1,11 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {beforeEach, describe, expect, it, vi} from "vitest";
 import Login from "../../pages/authentication/Login";
-import {login} from "../../hooks/AuthenticationHooks";
-import {getUserData} from "../../hooks/UserHooks";
-import {BrowserRouter as Router} from "react-router-dom";
-import {AuthContext} from "../../services/AuthContext"; // Ajustez le chemin selon votre structure
+import { login } from "../../hooks/AuthenticationHooks";
+import { getUserData } from "../../hooks/UserHooks";
+import { BrowserRouter as Router } from "react-router-dom";
+import { AuthContext } from "../../services/AuthContext";
 
-// Mock the hooks
 vi.mock("../../hooks/AuthenticationHooks", () => ({
     login: vi.fn(),
 }));
@@ -15,7 +14,6 @@ vi.mock("../../hooks/UserHooks", () => ({
     getUserData: vi.fn(),
 }));
 
-// Mock useNavigate
 const mockNavigate = vi.fn();
 vi.mock("react-router-dom", async () => {
     const actual = await vi.importActual("react-router-dom");
@@ -25,7 +23,6 @@ vi.mock("react-router-dom", async () => {
     };
 });
 
-// Mock localStorage
 const localStorageMock = (() => {
     let store = {};
     return {
@@ -46,11 +43,9 @@ Object.defineProperty(window, "localStorage", { value: localStorageMock });
 
 describe("Login Component", () => {
     beforeEach(() => {
-        // Reset mocks
         vi.clearAllMocks();
         localStorageMock.clear();
 
-        // Mock implementation for login and getUserData
         login.mockImplementation(() =>
             Promise.resolve({ token: "fake-token" })
         );
@@ -150,7 +145,6 @@ describe("Login Component", () => {
             ).toBeInTheDocument();
         });
 
-        // Check that user data was fetched and stored
         expect(getUserData).toHaveBeenCalled();
 
         await waitFor(() => {
@@ -168,8 +162,7 @@ describe("Login Component", () => {
             );
         });
 
-        // Check for navigation after timeout
-        await new Promise((r) => setTimeout(r, 2100)); // Wait for the 2000ms timeout
+        await new Promise((r) => setTimeout(r, 2100));
         expect(mockNavigate).toHaveBeenCalledWith("/");
     });
 

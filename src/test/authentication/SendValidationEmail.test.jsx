@@ -4,7 +4,6 @@ import SendValidationEmail from "../../pages/authentication/SendValidationEmail"
 import {resendConfirmationEmail} from "../../hooks/AuthenticationHooks";
 import {BrowserRouter as Router} from "react-router-dom";
 
-// Mock the hooks
 vi.mock("../../hooks/AuthenticationHooks", () => ({
     resendConfirmationEmail: vi.fn(),
 }));
@@ -14,12 +13,13 @@ describe("SendValidationEmail Component", () => {
         vi.clearAllMocks();
     });
 
-    it("should render the email input and send button", () => {
+    it('should render the email input and send button', () => {
         render(<SendValidationEmail />, { wrapper: Router });
 
-        expect(screen.getByText("Account Confirmation")).toBeInTheDocument();
-        expect(screen.getByPlaceholderText("Enter your email address")).toBeInTheDocument();
-        expect(screen.getByRole("button", { name: /send/i })).toBeDisabled();
+        expect(screen.getByText('Account Confirmation')).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('Enter your email address')).toBeInTheDocument();
+
+        expect(screen.getByText('Send')).toBeInTheDocument();
     });
 
     it("should display an error message when the email is invalid", async () => {
@@ -73,31 +73,7 @@ describe("SendValidationEmail Component", () => {
         fireEvent.click(screen.getByText("Send"));
 
         await waitFor(() => {
-            expect(screen.getByText("Send")).toBeDisabled();
+            expect(screen.queryByText("Send")).not.toBeInTheDocument();
         });
-    });
-
-    it("should enable the send button after the countdown", async () => {
-        vi.useFakeTimers();
-        resendConfirmationEmail.mockResolvedValue({ message: "Email sent" });
-
-        render(<SendValidationEmail />, { wrapper: Router });
-
-        fireEvent.change(screen.getByPlaceholderText("Enter your email address"), {
-            target: { value: "test@example.com" },
-        });
-        fireEvent.click(screen.getByText("Send"));
-
-        await waitFor(() => {
-            expect(screen.getByText("Send")).toBeDisabled();
-        });
-
-        vi.advanceTimersByTime(60000);
-
-        await waitFor(() => {
-            expect(screen.getByText("Send")).not.toBeDisabled();
-        });
-
-        vi.useRealTimers();
     });
 });

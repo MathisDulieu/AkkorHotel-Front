@@ -4,14 +4,12 @@ import Register from "../../pages/authentication/Register";
 import {register} from "../../hooks/AuthenticationHooks";
 import {BrowserRouter as Router} from "react-router-dom";
 
-// Mock de la fonction register
 vi.mock("../../hooks/AuthenticationHooks", () => ({
     register: vi.fn(),
 }));
 
 describe("Register Component", () => {
     beforeEach(() => {
-        // Réinitialiser les appels mock avant chaque test
         vi.clearAllMocks();
     });
 
