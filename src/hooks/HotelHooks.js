@@ -18,17 +18,10 @@ export async function fetchHotels(data) {
 }
 
 export async function getHotelById(hotelId) {
-    const authToken = localStorage.getItem('authToken');
-
-    if (!authToken) {
-        throw new Error('No authentication token found');
-    }
-
     const response = await fetch(`${API_BASE_URL}/hotel/${hotelId}`, {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${authToken}`
+            'Content-Type': 'application/json'
         }
     });
 
