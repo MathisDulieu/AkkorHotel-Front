@@ -1,12 +1,11 @@
 import React, {useContext, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {AuthContext} from "../../services/AuthContext.jsx";
 
 const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
     const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
-    const authToken = localStorage.getItem('authToken');
     const username = localStorage.getItem('username');
     const profileImage = localStorage.getItem('profileImage');
     const userRole = localStorage.getItem('userRole');
@@ -43,7 +42,7 @@ const Header = () => {
                 Akkor Hotel
             </div>
             <div className="flex flex-shrink-0 items-center space-x-4 text-white">
-                {authToken ? (
+                {isAuthenticated ? (
                     <>
                         <div className="flex flex-col items-end">
                             <div className="text-lg font-medium">{username}</div>
@@ -98,7 +97,7 @@ const Header = () => {
                         </div>
                     </>
                 ) : (
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-4 my-4">
                         <button
                             className="px-4 py-2 bg-white text-blue-600 rounded-lg"
                             onClick={() => navigate('/login')}

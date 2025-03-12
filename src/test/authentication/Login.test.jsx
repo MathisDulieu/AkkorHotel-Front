@@ -1,10 +1,10 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import Login from "../../pages/authentication/Login";
-import { login } from "../../hooks/AuthenticationHooks";
-import { getUserData } from "../../hooks/UserHooks";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AuthContext } from "../../services/AuthContext"; // Ajustez le chemin selon votre structure
+import {login} from "../../hooks/AuthenticationHooks";
+import {getUserData} from "../../hooks/UserHooks";
+import {BrowserRouter as Router} from "react-router-dom";
+import {AuthContext} from "../../services/AuthContext"; // Ajustez le chemin selon votre structure
 
 // Mock the hooks
 vi.mock("../../hooks/AuthenticationHooks", () => ({

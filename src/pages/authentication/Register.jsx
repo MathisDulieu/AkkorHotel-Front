@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { User, Lock, Mail, AlertCircle } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import Footer from "../../components/structure/footer";
-import { register } from "../../hooks/AuthenticationHooks";
+import React, {useEffect, useState} from "react";
+import {AlertCircle, Lock, Mail, User} from "lucide-react";
+import {Link, useNavigate} from "react-router-dom";
+import {register} from "../../hooks/AuthenticationHooks";
 
 const Register = () => {
     const [fullName, setFullName] = useState("");

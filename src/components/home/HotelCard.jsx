@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, MapPin } from 'lucide-react';
+import {ArrowRight, MapPin} from 'lucide-react';
 
 const HotelCard = ({
                        imageUrl = "https://www.yonder.fr/sites/default/files/styles/lg-insert/public/contenu/destinations/the_nautilus_maldives.jpg?itok=jUb420c7",

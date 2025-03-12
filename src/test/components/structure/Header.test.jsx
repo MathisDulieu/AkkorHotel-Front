@@ -1,8 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import Header from "../../../components/structure/header.jsx";
-import { BrowserRouter as Router } from "react-router-dom";
-import { AuthContext } from "../../../services/AuthContext"; // Ajustez le chemin selon votre structure
+import {BrowserRouter as Router} from "react-router-dom";
+import {AuthContext} from "../../../services/AuthContext"; // Ajustez le chemin selon votre structure
 
 // Mock the hooks
 const mockNavigate = vi.fn();

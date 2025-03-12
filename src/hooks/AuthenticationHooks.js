@@ -1,5 +1,5 @@
-// const API_BASE_URL = "http://localhost:8080";
-const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
+const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 async function handleResponse(response) {
     let errorMessage = `HTTP error! status: ${response.status}`;
@@ -15,27 +15,6 @@ async function handleResponse(response) {
     }
 
     throw new Error(errorMessage);
-}
-
-export async function verifyEmail(token) {
-    const response = await fetch(`${API_BASE_URL}/auth/confirm-email?token=${token}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-    });
-
-    if (!response.ok) await handleResponse(response);
-    return response.json();
-}
-
-export async function sendValidationEmailAgain(email) {
-    const response = await fetch(`${API_BASE_URL}/auth/resend-confirmation-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-    });
-
-    if (!response.ok) await handleResponse(response);
-    return response.json();
 }
 
 export async function login(email, password) {

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { addRoomToHotel, deleteRoomFromHotel, addImageToHotel, deleteImageFromHotel } from "../../hooks/AdminHooks.js";
-import { getHotelById } from "../../hooks/HotelHooks.js"
+import React, {useState} from 'react';
+import {addImageToHotel, addRoomToHotel, deleteImageFromHotel, deleteRoomFromHotel} from "../../hooks/AdminHooks.js";
+import {getHotelById} from "../../hooks/HotelHooks.js"
 
 const UpdateHotel = () => {
     const [inputHotelId, setInputHotelId] = useState("");
@@ -74,7 +74,7 @@ const UpdateHotel = () => {
                 setImages(data.informations.hotel.picture_list || []);
                 setHotelId(inputHotelId);
             } else {
-                throw new Error("Hotel data structure is invalid");
+                return new Error("Hotel data structure is invalid");
             }
         } catch (err) {
             setError(err.message || "Failed to fetch hotel data");
@@ -138,13 +138,11 @@ const UpdateHotel = () => {
         }
     };
 
-    // Fonction pour gérer la sélection d'une image
     const handleImageChange = (e) => {
         if (e.target.files && e.target.files[0]) {
             const selectedImage = e.target.files[0];
             setNewImage(selectedImage);
 
-            // Créer un aperçu de l'image
             const reader = new FileReader();
             reader.onload = (e) => {
                 setImagePreview(e.target.result);
@@ -468,7 +466,6 @@ const UpdateHotel = () => {
                         )}
                     </div>
 
-                    {/* Section pour les chambres */}
                     <div>
                         <h3 className="text-xl font-semibold mb-4">Hotel Rooms</h3>
 

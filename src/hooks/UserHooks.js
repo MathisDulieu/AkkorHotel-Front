@@ -1,11 +1,11 @@
-// const API_BASE_URL = "http://localhost:8080";
-const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
+const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 export async function getUserData() {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        return {};
+        throw new Error("No authentication token found");
     }
 
     const response = await fetch(`${API_BASE_URL}/private/user`, {
@@ -27,7 +27,7 @@ export async function updateUser(username, email, oldPassword, newPassword) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        return {};
+        throw new Error("No authentication token found");
     }
 
     const response = await fetch(`${API_BASE_URL}/private/user`, {
@@ -51,7 +51,7 @@ export async function updateProfileImage(imageFile) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        return {};
+        throw new Error("No authentication token found");
     }
 
     const formData = new FormData();
@@ -77,7 +77,7 @@ export async function deleteUser() {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        return {};
+        throw new Error("No authentication token found");
     }
 
     const response = await fetch(`${API_BASE_URL}/private/user`, {

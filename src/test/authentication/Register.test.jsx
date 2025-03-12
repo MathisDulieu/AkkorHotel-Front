@@ -1,8 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import {fireEvent, render, screen} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import Register from "../../pages/authentication/Register";
-import { register } from "../../hooks/AuthenticationHooks";
-import { BrowserRouter as Router } from "react-router-dom";
+import {register} from "../../hooks/AuthenticationHooks";
+import {BrowserRouter as Router} from "react-router-dom";
 
 // Mock de la fonction register
 vi.mock("../../hooks/AuthenticationHooks", () => ({

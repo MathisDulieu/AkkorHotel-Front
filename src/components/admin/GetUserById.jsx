@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { getUserById } from "../../hooks/AdminHooks.js";
+import React, {useState} from 'react';
+import {getUserById} from "../../hooks/AdminHooks.js";
 
 const GetUserById = () => {
     const [userId, setUserId] = useState('');

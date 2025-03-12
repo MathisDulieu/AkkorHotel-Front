@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import {render, screen, waitFor} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import ValidEmail from "../../pages/authentication/ValidEmail";
-import { confirmEmail } from "../../hooks/AuthenticationHooks";
-import { BrowserRouter as Router } from "react-router-dom";
+import {confirmEmail} from "../../hooks/AuthenticationHooks";
+import {BrowserRouter as Router} from "react-router-dom";
 
 // Mock the hooks
 vi.mock("../../hooks/AuthenticationHooks", () => ({

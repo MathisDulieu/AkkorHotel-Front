@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from "react";
-import { Globe, User, Bed, RefreshCcw } from "lucide-react";
+import {Bed, Globe, RefreshCcw, User} from "lucide-react";
 import Header from "../../components/structure/header.jsx";
 import Filters from "../../components/home/Filters.jsx";
 import DatePicker from "../../components/home/DatePicker";
 import Checkbox from "../../components/home/Checkbox";
 import HotelCard from "../../components/home/HotelCard.jsx";
-import { fetchHotels } from "../../hooks/HotelHooks.js";
+import {fetchHotels} from "../../hooks/HotelHooks.js";
 import Footer from "../../components/structure/footer.jsx";
 
 const Home = () => {

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { format } from 'date-fns';
-import { getHotelBookings } from "../../hooks/AdminHooks.js";
+import React, {useState} from 'react';
+import {format} from 'date-fns';
+import {getHotelBookings} from "../../hooks/AdminHooks.js";
 
 const HotelBookings = () => {
     const [bookings, setBookings] = useState([]);

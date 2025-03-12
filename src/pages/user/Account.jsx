@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Eye, EyeOff, Pencil } from "lucide-react";
-import {
-    getUserData,
-    updateProfileImage,
-    updateUser,
-    deleteUser
-} from "../../hooks/UserHooks";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Eye, EyeOff, Pencil} from "lucide-react";
+import {deleteUser, getUserData, updateProfileImage, updateUser} from "../../hooks/UserHooks";
+import {useNavigate} from "react-router-dom";
 
 function Account() {
     const navigate = useNavigate();
@@ -27,10 +22,8 @@ function Account() {
     const [isUsernameModified, setIsUsernameModified] = useState(false);
     const [isEmailModified, setIsEmailModified] = useState(false);
     const [isPasswordModified, setIsPasswordModified] = useState(false);
-    const [isEditingPassword, setIsEditingPassword] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [typingTimeout, setTypingTimeout] = useState(null);
 
     const getUserDetails = async () => {
         try {
@@ -74,7 +67,7 @@ function Account() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (!newPassword === null) {
+        if (newPassword) {
             if (newPassword !== confirmPassword) {
                 setError("The new passwords do not match");
                 setTimeout(() => setError(""), 6000);
@@ -103,11 +96,6 @@ function Account() {
         e.preventDefault();
         setIsEditingEmail(false);
         setIsEmailModified(true);
-    };
-
-    const handlePasswordSubmit = (e) => {
-        setIsEditingPassword(false);
-        setIsPasswordModified(true);
     };
 
     const handleDeleteAccount = async () => {
@@ -227,7 +215,13 @@ function Account() {
                                 <input
                                     type={showOldPassword ? "text" : "password"}
                                     value={oldPassword}
-                                    onChange={(e) => setOldPassword(e.target.value)}
+                                    onChange={(e) => {
+                                        setOldPassword(e.target.value);
+                                        // Définir isPasswordModified à true dès qu'on commence à taper
+                                        if (e.target.value) {
+                                            setIsPasswordModified(true);
+                                        }
+                                    }}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                                 />
                                 <button
@@ -247,18 +241,9 @@ function Account() {
                                     type={showNewPassword ? "text" : "password"}
                                     value={newPassword}
                                     onChange={(e) => {
-                                        const value = e.target.value;
-                                        setNewPassword(value);
-
-                                        if (typingTimeout) {
-                                            clearTimeout(typingTimeout);
-                                        }
-
-                                        const timeout = setTimeout(() => {
-                                            handlePasswordSubmit();
-                                        }, 2000);
-
-                                        setTypingTimeout(timeout);
+                                        setNewPassword(e.target.value);
+                                        // Définir isPasswordModified à true immédiatement
+                                        setIsPasswordModified(true);
                                     }}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                                 />
@@ -278,7 +263,11 @@ function Account() {
                                 <input
                                     type={showConfirmPassword ? "text" : "password"}
                                     value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    onChange={(e) => {
+                                        setConfirmPassword(e.target.value);
+                                        // Définir isPasswordModified à true immédiatement
+                                        setIsPasswordModified(true);
+                                    }}
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm"
                                 />
                                 <button

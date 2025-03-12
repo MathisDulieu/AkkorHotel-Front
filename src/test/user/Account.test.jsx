@@ -1,7 +1,7 @@
-import { render } from "@testing-library/react";
-import { describe, it, vi } from "vitest";
+import {render} from "@testing-library/react";
+import {describe, it, vi} from "vitest";
 import Account from "../../pages/user/Account";
-import { BrowserRouter as Router } from "react-router-dom";
+import {BrowserRouter as Router} from "react-router-dom";
 
 vi.mock("../../hooks/UserHooks", () => ({
     getUserData: vi.fn(),

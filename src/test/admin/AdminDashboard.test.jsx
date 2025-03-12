@@ -1,9 +1,9 @@
 import React from "react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"; // Import render and screen
+import {beforeEach, describe, expect, it, vi} from "vitest";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react"; // Import render and screen
 import Home from "../../pages/common/Home";
-import { fetchHotels } from "../../hooks/HotelHooks.js";
+import {fetchHotels} from "../../hooks/HotelHooks.js";
 
 // Mock fetchHotels with vi.mock
 vi.mock("../../hooks/HotelHooks.js", () => ({

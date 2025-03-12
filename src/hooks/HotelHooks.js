@@ -1,5 +1,5 @@
-// const API_BASE_URL = "http://localhost:8080";
-const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
+const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 export async function fetchHotels(data) {
     const response = await fetch(`${API_BASE_URL}/hotel`, {
@@ -22,7 +22,7 @@ export async function getHotelById(hotelId) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/hotel/${hotelId}`, {

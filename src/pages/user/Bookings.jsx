@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
-import { getUserBookings } from "../../hooks/BookingHooks.js"; // We'll create this hook
+import React, {useEffect, useState} from 'react';
+import {format} from 'date-fns';
+import {deleteBooking, getUserBookings} from "../../hooks/BookingHooks.js";
 
 const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [deleteProcessing, setDeleteProcessing] = useState(false);
+    const [deleteSuccess, setDeleteSuccess] = useState(null);
+    const [deleteError, setDeleteError] = useState(null);
 
     useEffect(() => {
         fetchUserBookings();
@@ -25,6 +28,27 @@ const Bookings = () => {
         }
     };
 
+    const handleDeleteBooking = async (bookingId) => {
+        setDeleteProcessing(true);
+        setDeleteError(null);
+        setDeleteSuccess(null);
+
+        try {
+            await deleteBooking(bookingId);
+            setDeleteSuccess("Booking cancelled successfully");
+
+            setBookings(bookings.filter(booking => booking.id !== bookingId));
+
+            setTimeout(() => {
+                setDeleteSuccess(null);
+            }, 3000);
+        } catch (err) {
+            setDeleteError(err.message || "Failed to cancel booking");
+        } finally {
+            setDeleteProcessing(false);
+        }
+    };
+
     return (
         <div className="max-w-4xl mx-auto py-8 px-4">
             <h1 className="text-3xl font-bold text-blue-800 mb-2">My Bookings</h1>
@@ -35,6 +59,20 @@ const Bookings = () => {
                     <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md">
                         <p className="font-medium">Error</p>
                         <p>{error}</p>
+                    </div>
+                )}
+
+                {deleteSuccess && (
+                    <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4 rounded-md">
+                        <p className="font-medium">Success</p>
+                        <p>{deleteSuccess}</p>
+                    </div>
+                )}
+
+                {deleteError && (
+                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4 rounded-md">
+                        <p className="font-medium">Error</p>
+                        <p>{deleteError}</p>
                     </div>
                 )}
 
@@ -67,7 +105,12 @@ const Bookings = () => {
                     <div>
                         <div className="grid grid-cols-1 gap-6">
                             {bookings.map((booking) => (
-                                <BookingCard key={booking._id} booking={booking} />
+                                <BookingCard
+                                    key={booking.id}
+                                    booking={booking}
+                                    onDeleteBooking={handleDeleteBooking}
+                                    deleteProcessing={deleteProcessing}
+                                />
                             ))}
                         </div>
                     </div>
@@ -77,7 +120,9 @@ const Bookings = () => {
     );
 };
 
-const BookingCard = ({ booking }) => {
+const BookingCard = ({ booking, onDeleteBooking, deleteProcessing }) => {
+    const [showConfirmation, setShowConfirmation] = useState(false);
+
     const formatDate = (dateString) => format(new Date(dateString), 'MM/dd/yyyy HH:mm');
 
     const getStatusBadgeColor = (status) => {
@@ -87,6 +132,19 @@ const BookingCard = ({ booking }) => {
             case 'CANCELLED': return 'bg-red-100 text-red-800';
             default: return 'bg-gray-100 text-gray-800';
         }
+    };
+
+    const handleCancelClick = () => {
+        setShowConfirmation(true);
+    };
+
+    const handleConfirmDelete = () => {
+        onDeleteBooking(booking.id);
+        setShowConfirmation(false);
+    };
+
+    const handleCancelDelete = () => {
+        setShowConfirmation(false);
     };
 
     const hotelImage = booking.hotel.picture_list?.[0] || "https://via.placeholder.com/400x300?text=No+Image";
@@ -143,18 +201,40 @@ const BookingCard = ({ booking }) => {
                     >
                         View Details
                     </button>
-                    {booking.status === 'PENDING' && (
+                    {booking.status === 'PENDING' && !showConfirmation && (
                         <button
                             className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded transition duration-300"
-                            onClick={() => {
-                                // Implement cancel booking functionality here
-                                if (window.confirm('Are you sure you want to cancel this booking?')) {
-                                    console.log('Cancel booking', booking._id);
-                                }
-                            }}
+                            onClick={handleCancelClick}
+                            disabled={deleteProcessing}
                         >
                             Cancel
                         </button>
+                    )}
+                    {booking.status === 'PENDING' && showConfirmation && (
+                        <div className="flex space-x-2">
+                            <button
+                                className="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded transition duration-300"
+                                onClick={handleConfirmDelete}
+                                disabled={deleteProcessing}
+                            >
+                                {deleteProcessing ? (
+                                    <span className="flex items-center">
+                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Processing...
+                                    </span>
+                                ) : "Confirm Cancel"}
+                            </button>
+                            <button
+                                className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition duration-300"
+                                onClick={handleCancelDelete}
+                                disabled={deleteProcessing}
+                            >
+                                Keep Booking
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

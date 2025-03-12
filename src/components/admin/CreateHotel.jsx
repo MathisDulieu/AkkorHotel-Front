@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import {createHotel} from "../../hooks/AdminHooks.js";
 
 const CreateHotel = () => {
@@ -455,7 +455,7 @@ const CreateHotel = () => {
                         </div>
 
                         {errors.mainImage && <p className="text-red-500 text-sm mt-3">{errors.mainImage}</p>}
-                        <p className="text-xs text-gray-500 mt-3 text-center">Accepted formats: JPG, PNG, WEBP</p>
+                        <p className="text-xs text-gray-500 mt-3 text-center">Accepted formats: JPG, JPEG, PNG, SVG, WEBP</p>
                     </div>
 
                     <div className="p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50">
@@ -505,7 +505,7 @@ const CreateHotel = () => {
                         </div>
 
                         {errors.additionalImages && <p className="text-red-500 text-sm mt-3">{errors.additionalImages}</p>}
-                        <p className="text-xs text-gray-500 mt-3 text-center">Accepted formats: JPG, PNG, WEBP</p>
+                        <p className="text-xs text-gray-500 mt-3 text-center">Accepted formats: JPG, JPEG, PNG, SVG, WEBP</p>
                     </div>
                 </div>
 

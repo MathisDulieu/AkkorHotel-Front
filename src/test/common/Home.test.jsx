@@ -1,8 +1,8 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {beforeEach, describe, expect, it, vi} from "vitest";
 import Home from "../../pages/common/Home";
-import { fetchHotels } from "../../hooks/HotelHooks";
-import { BrowserRouter as Router } from "react-router-dom";
+import {fetchHotels} from "../../hooks/HotelHooks";
+import {BrowserRouter as Router} from "react-router-dom";
 
 // Mock the hooks
 vi.mock("../../hooks/HotelHooks", () => ({

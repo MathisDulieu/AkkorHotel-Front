@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { CheckCircle, AlertCircle, Clock, Mail, LogIn, RefreshCw } from 'lucide-react';
-import { confirmEmail } from '../../hooks/AuthenticationHooks';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {AlertCircle, CheckCircle, Clock, LogIn, Mail, RefreshCw} from 'lucide-react';
+import {confirmEmail} from '../../hooks/AuthenticationHooks';
 
 const ValidEmail = () => {
     const { token } = useParams();

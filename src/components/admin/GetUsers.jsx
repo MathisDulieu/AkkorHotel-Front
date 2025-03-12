@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getAllUsers } from '../../hooks/AdminHooks.js';
+import React, {useEffect, useState} from 'react';
+import {getAllUsers} from '../../hooks/AdminHooks.js';
 
 const GetUsers = () => {
     const [users, setUsers] = useState([]);

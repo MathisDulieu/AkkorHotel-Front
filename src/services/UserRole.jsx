@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from './AuthContext';
+import React, {useContext} from 'react';
+import {Navigate} from 'react-router-dom';
+import {AuthContext} from './AuthContext';
 
 const UserRole = ({ element: Component, allowedRoles = [] }) => {
     const { isAuthenticated, isAdmin } = useContext(AuthContext);

@@ -1,9 +1,9 @@
-import React, {useState, useEffect, useContext} from "react";
-import { User, Lock, AlertCircle, ArrowRight } from "lucide-react";
-import { AuthContext } from '../../services/AuthContext';
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../hooks/AuthenticationHooks";
-import { getUserData } from '../../hooks/UserHooks';
+import React, {useContext, useEffect, useState} from "react";
+import {AlertCircle, ArrowRight, Lock, User} from "lucide-react";
+import {AuthContext} from '../../services/AuthContext';
+import {Link, useNavigate} from "react-router-dom";
+import {login} from "../../hooks/AuthenticationHooks";
+import {getUserData} from '../../hooks/UserHooks';
 
 
 const Login = () => {

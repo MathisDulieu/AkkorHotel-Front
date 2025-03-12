@@ -1,5 +1,5 @@
-// const API_BASE_URL = "http://localhost:8080";
-const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
+const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 export async function createHotel(formData, mainImage, additionalImages) {
     const authToken = localStorage.getItem('authToken');
@@ -15,6 +15,7 @@ export async function createHotel(formData, mainImage, additionalImages) {
     additionalImages.forEach(image => {
         formDataToSend.append("pictures", image);
     });
+
 
     const response = await fetch(`${API_BASE_URL}/private/admin/hotel`, {
         method: 'POST',
@@ -104,7 +105,7 @@ export async function getAllUsers(keyword = "", page = 0, pageSize = 10) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const queryParams = new URLSearchParams({
@@ -132,7 +133,7 @@ export async function getUserBookings(userId) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/private/admin/users/${userId}/bookings`, {
@@ -154,7 +155,7 @@ export async function getHotelBookings(hotelId) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/private/admin/hotels/${hotelId}/bookings`, {
@@ -176,7 +177,7 @@ export async function addRoomToHotel(roomData) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/private/admin/hotel/room`, {
@@ -206,7 +207,7 @@ export async function deleteRoomFromHotel(hotelId, hotelRoomId) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/private/admin/hotel/room`, {
@@ -239,7 +240,7 @@ export async function addImageToHotel(hotelId, pictureFile) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const formData = new FormData();
@@ -271,7 +272,7 @@ export async function deleteImageFromHotel(hotelId, pictureLink) {
     const authToken = localStorage.getItem('authToken');
 
     if (!authToken) {
-        throw new Error('Authentication token not found');
+        throw new Error('No authentication token found');
     }
 
     const response = await fetch(`${API_BASE_URL}/private/admin/hotel/${hotelId}/picture`, {

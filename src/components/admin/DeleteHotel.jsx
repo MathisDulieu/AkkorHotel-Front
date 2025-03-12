@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {deleteHotel} from "../../hooks/AdminHooks.js";
 
 const DeleteHotel = () => {

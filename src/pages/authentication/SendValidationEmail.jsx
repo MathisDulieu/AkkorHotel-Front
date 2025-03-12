@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, CheckCircle, AlertCircle, Clock, LogIn } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
-import { resendConfirmationEmail } from '../../hooks/AuthenticationHooks.js';
+import React, {useEffect, useState} from 'react';
+import {AlertCircle, CheckCircle, Clock, LogIn, Mail} from 'lucide-react';
+import {useNavigate} from "react-router-dom";
+import {resendConfirmationEmail} from '../../hooks/AuthenticationHooks.js';
 
 const SendValidationEmail = () => {
     const [email, setEmail] = useState('');
@@ -55,7 +55,7 @@ const SendValidationEmail = () => {
             }, 5000);
         } catch (error) {
             setError(error.message);
-            setCanSend(true); // Allow retry if there was an error
+            setCanSend(true);
         } finally {
             setIsLoading(false);
         }
