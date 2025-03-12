@@ -6,4 +6,4 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - API_BASE_URL=${{ shared.API_BASE_URL }}
+      - VITE_API_BASE_URL=${{ shared.API_BASE_URL }}
