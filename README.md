@@ -82,3 +82,20 @@ To run automated tests:
 ```bash
 npm run test
 ```
+
+## Configuration
+
+To run this project locally, you need to set up the environment variables:
+
+1. In the `.env` file, uncomment the local URL to use the local API:
+
+   ```bash
+   VITE_API_BASE_URL=http://localhost:8080
+   ```
+   
+2. In the same environment file, don't forget to comment out the following variable:
+
+    ```bash
+   VITE_API_BASE_URL=https://akkorhotel-api.up.railway.app
+   ```
+    
