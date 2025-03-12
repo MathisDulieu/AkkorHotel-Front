@@ -56,13 +56,13 @@ const HotelCard = ({
                             <span className="ml-1 text-gray-600">{rating}</span>
                         </div>
                     </div>
-                    <button
+                    <a
+                        href={`/hotel/${hotelId}`}
                         className="flex select-none items-center gap-2 rounded-lg py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-pink-500 transition-all hover:bg-pink-500/10 active:bg-pink-500/30"
-                        type="button"
                     >
                         Book Now
                         <ArrowRight className="w-4 h-4" />
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
