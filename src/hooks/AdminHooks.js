@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 export async function createHotel(formData, mainImage, additionalImages) {
     const authToken = localStorage.getItem('authToken');

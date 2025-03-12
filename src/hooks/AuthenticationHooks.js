@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080";
+// const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = "https://akkorhotel-api.up.railway.app"
 
 async function handleResponse(response) {
     let errorMessage = `HTTP error! status: ${response.status}`;
