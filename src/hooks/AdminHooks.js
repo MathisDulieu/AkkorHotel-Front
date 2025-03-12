@@ -126,3 +126,174 @@ export async function getAllUsers(keyword = "", page = 0, pageSize = 10) {
 
     return await response.json();
 }
+
+export async function getUserBookings(userId) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/users/${userId}/bookings`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+}
+
+export async function getHotelBookings(hotelId) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/hotels/${hotelId}/bookings`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json();
+}
+
+export async function addRoomToHotel(roomData) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/hotel/room`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        },
+        body: JSON.stringify(roomData)
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors) {
+            throw new Error(errorData.errors.join(', '));
+        } else if (errorData.error) {
+            throw new Error(errorData.error);
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    }
+
+    return await response.json();
+}
+
+export async function deleteRoomFromHotel(hotelId, hotelRoomId) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/hotel/room`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        },
+        body: JSON.stringify({
+            hotelId: hotelId,
+            hotelRoomId: hotelRoomId
+        })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors) {
+            throw new Error(errorData.errors.join(', '));
+        } else if (errorData.error) {
+            throw new Error(errorData.error);
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    }
+
+    return await response.json();
+}
+
+export async function addImageToHotel(hotelId, pictureFile) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const formData = new FormData();
+    formData.append('picture', pictureFile);
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/hotel/${hotelId}/picture`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors) {
+            throw new Error(errorData.errors.join(', '));
+        } else if (errorData.error) {
+            throw new Error(errorData.error);
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    }
+
+    return await response.json();
+}
+
+export async function deleteImageFromHotel(hotelId, pictureLink) {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+        throw new Error('Authentication token not found');
+    }
+
+    const response = await fetch(`${API_BASE_URL}/private/admin/hotel/${hotelId}/picture`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+        },
+        body: JSON.stringify({
+            pictureLink: pictureLink
+        })
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json();
+        if (errorData.errors) {
+            throw new Error(errorData.errors.join(', '));
+        } else if (errorData.error) {
+            throw new Error(errorData.error);
+        } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+    }
+
+    return await response.json();
+}

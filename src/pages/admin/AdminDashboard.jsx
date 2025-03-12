@@ -18,6 +18,8 @@ import DeleteHotel from "../../components/admin/DeleteHotel.jsx";
 import GetUserById from "../../components/admin/GetUserById.jsx";
 import UpdateUser from "../../components/admin/UpdateUser.jsx";
 import GetUsers from "../../components/admin/GetUsers.jsx";
+import UserBookings from "../../components/admin/UserBookings.jsx";
+import HotelBookings from "../../components/admin/HotelBookings.jsx";
 
 const DashboardList = ({ setActiveContent }) => {
     const [isHotelOpen, setIsHotelOpen] = useState(false);
@@ -105,7 +107,7 @@ const DashboardList = ({ setActiveContent }) => {
                                         className="flex items-center w-full p-2 text-base font-normal text-white rounded-lg hover:bg-blue-700 pl-11"
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            setActiveContent('listBookings');
+                                            setActiveContent('listHotelBookings');
                                         }}
                                     >
                                         <CalendarCheck className="w-5 h-5 mr-3" /> List of bookings
@@ -173,6 +175,18 @@ const DashboardList = ({ setActiveContent }) => {
                                         <UsersRound className="w-5 h-5 mr-3" /> List users
                                     </a>
                                 </li>
+                                <li>
+                                    <a
+                                        href="#"
+                                        className="flex items-center w-full p-2 text-base font-normal text-white rounded-lg hover:bg-blue-700 pl-11"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setActiveContent('listUsersBookings');
+                                        }}
+                                    >
+                                        <CalendarCheck className="w-5 h-5 mr-3" /> List of bookings
+                                    </a>
+                                </li>
                             </ul>
                         )}
                     </li>
@@ -198,11 +212,12 @@ const DeleteHotelContent = () => (
     <DeleteHotel />
 );
 
-const ListBookingsContent = () => (
-    <div>
-        <h1 className="text-2xl font-bold">List of Bookings</h1>
-        <p className="mt-4">View all bookings across hotels.</p>
-    </div>
+const ListHotelBookingsContent = () => (
+    <HotelBookings />
+);
+
+const ListUserBookingsContent = () => (
+    <UserBookings />
 );
 
 const RetrieveUserContent = () => (
@@ -228,14 +243,16 @@ const AdminDashboard = () => {
                 return <UpdateHotelContent />;
             case 'deleteHotel':
                 return <DeleteHotelContent />;
-            case 'listBookings':
-                return <ListBookingsContent />;
+            case 'listHotelBookings':
+                return <ListHotelBookingsContent />;
             case 'retrieveUser':
                 return <RetrieveUserContent />;
             case 'updateUser':
                 return <UpdateUserContent />;
             case 'listUsers':
                 return <ListUsersContent />;
+            case 'listUsersBookings':
+                return <ListUserBookingsContent />
             case 'dashboard':
             default:
                 return <DashboardContent />;

@@ -50,9 +50,9 @@ const Header = () => {
                         </div>
                         <div className="relative">
                             <img
-                                src={profileImage || "/default-profile.png"}
+                                src={profileImage}
                                 alt="Profile"
-                                className="h-13 w-13 rounded-full cursor-pointer border-2 border-blue-400"
+                                className="h-13 w-13 rounded-full cursor-pointer border-2 border-blue-400 object-cover"
                                 onClick={toggleDropdown}
                             />
                             {isDropdownOpen && (

@@ -6,6 +6,7 @@ import DatePicker from "../../components/home/DatePicker";
 import Checkbox from "../../components/home/Checkbox";
 import HotelCard from "../../components/home/HotelCard.jsx";
 import { fetchHotels } from "../../hooks/HotelHooks.js";
+import Footer from "../../components/structure/footer.jsx";
 
 const Home = () => {
     const [hotels, setHotels] = useState([]);
@@ -494,6 +495,8 @@ const Home = () => {
                                 </button>
                             </div>
                         </div>
+                        <hr className="border-t border-white/30 mb-4" />
+                        <Footer />
                     </div>
                 </main>
             </div>
